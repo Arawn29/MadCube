@@ -28,7 +28,7 @@ Material:
   - _BLEND_MODE_SCREEN
   - _COORDINATES_OBJECT
   m_InvalidKeywords: []
-  m_LightmapFlags: 2
+  m_LightmapFlags: 0
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
@@ -113,20 +113,24 @@ Material:
     - _CastShadows: 1
     - _Cull: 2
     - _Dirt: 0
-    - _Dirt_Blend: 0.5
-    - _Dirt_Height: 0.5
+    - _Dirt_Blend: 0
+    - _Dirt_Height: 0.6
+    - _DitherXray: 0.48
     - _DstBlend: 0
-    - _Edge_Sharpness: 6.4
+    - _Edge_Sharpness: 33.6
     - _Emission: 0
     - _Emission_Map_Multiplier: 1
     - _Emission_Tiling: 1
     - _Metallic: 0
     - _Metallic_Map_Multiplier: 1
     - _Metallic_Tiling: 1
+    - _OpacityXray: 0.93
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
+    - _SizeXray: 0
     - _Smoothness: 0
+    - _SmoothnessXray: 0.35
     - _SrcBlend: 1
     - _Surface: 0
     - _Tiling: 1
@@ -138,12 +142,16 @@ Material:
     - _Base_Color: {r: 0.16981131, g: 0.16981131, b: 0.16981131, a: 1}
     - _Base_Color_Sides: {r: 0.4433962, g: 0.4433962, b: 0.4433962, a: 1}
     - _Base_Color_Top: {r: 0.30980393, g: 0.26666668, b: 0.92156863, a: 1}
-    - _Dirt_Color: {r: 0.18592346, g: 0.07008722, b: 0.33018863, a: 0}
+    - _Dirt_Color: {r: 0.439394, g: 0, b: 1, a: 0}
     - _Emission_Color: {r: 0, g: 0, b: 0, a: 0}
-    - _Side_Color: {r: 0, g: 0, b: 0, a: 0}
-    - _Side_Offset: {r: 0.5, g: 0, b: 0, a: 0}
+    - _PlayerPosition: {r: 0.5, g: 0.5, b: 0, a: 0}
+    - _PlayerPositionXray: {r: 0.63491863, g: 0.5399398, b: 12.9886265, a: 0}
+    - _Side_Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Side_Offset: {r: 0, g: 0, b: 0, a: 0}
     - _Sides_Color: {r: 0.44313726, g: 0.44313726, b: 0.44313726, a: 0}
     - _Sides_Offset: {r: 0, g: 0, b: 0, a: 0}
+    - _Size: {r: 1, g: 1, b: 0, a: 0}
+    - _SizeXray: {r: 0, g: 0, b: 0, a: 0}
     - _Top_Color: {r: 0.30980393, g: 0.26666668, b: 0.92156863, a: 1}
-    - _Top_Offset: {r: 1, g: 1, b: 0, a: 0}
+    - _Top_Offset: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []

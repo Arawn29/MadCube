@@ -21,8 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: GM-Grid-20-URP
-  m_Shader: {fileID: -6465566751694194690, guid: 44f8dfd6d74d14469bb0ef07b544f59e,
-    type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 44f8dfd6d74d14469bb0ef07b544f59e, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -77,5 +76,5 @@ Material:
     - _Tiling: 1
     m_Colors:
     - _Base_Color: {r: 0.2735849, g: 0.2735849, b: 0.2735849, a: 0}
-    - _Emission_Color: {r: 6.88318, g: 3.1457925, b: 0, a: 0}
+    - _Emission_Color: {r: 9.189584, g: 4.2339444, b: 0, a: 0}
   m_BuildTextureStacks: []

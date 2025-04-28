@@ -21,8 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: GM-Grid-10-URP
-  m_Shader: {fileID: -6465566751694194690, guid: b4bb8b5c4862a416fa38d705dedc4d96,
-    type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: b4bb8b5c4862a416fa38d705dedc4d96, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
@@ -31,7 +30,7 @@ Material:
   m_InvalidKeywords:
   - _BLEND_MODE_ADD
   m_LightmapFlags: 2
-  m_EnableInstancingVariants: 0
+  m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
   stringTagMap: {}
@@ -114,22 +113,26 @@ Material:
     - _COORDINATES: 0
     - _CastShadows: 1
     - _Cull: 2
-    - _Dirt: 0
+    - _Dirt: 1
     - _Dirt_Blend: 0.5
     - _Dirt_Height: 0.5
+    - _DitherXray: 0
     - _DstBlend: 0
-    - _Edge_Sharpness: 50
+    - _Edge_Sharpness: 45.9
     - _Emission: 0
     - _Emission_Map_Multiplier: 1
     - _Emission_Tiling: 1
     - _Metallic: 0.5
     - _Metallic_Map_Multiplier: 1
     - _Metallic_Tiling: 1
+    - _OpacityXray: 1
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
     - _Sides_Tiling: 0
+    - _SizeXray: 0
     - _Smoothness: 0
+    - _SmoothnessXray: 0.25
     - _SrcBlend: 1
     - _Surface: 0
     - _Tiling: 1
@@ -141,8 +144,9 @@ Material:
     - _Base_Color: {r: 0.16981131, g: 0.16981131, b: 0.16981131, a: 1}
     - _Base_Color_Sides: {r: 0.24705882, g: 0.24705882, b: 0.24705882, a: 1}
     - _Base_Color_Top: {r: 0.24528301, g: 0.24528301, b: 0.24528301, a: 1}
-    - _Dirt_Color: {r: 0.18592346, g: 0.07008722, b: 0.33018863, a: 0}
+    - _Dirt_Color: {r: 0.1668974, g: 0, b: 0.4113207, a: 0}
     - _Emission_Color: {r: 0, g: 0, b: 0, a: 1}
+    - _PlayerPositionXray: {r: 0.6383348, g: 0.7089294, b: 10.159379, a: 0}
     - _Side_Color: {r: 0, g: 0, b: 0, a: 0}
     - _Side_Offset: {r: 0, g: 0, b: 0, a: 0}
     - _Sides_Color: {r: 0.24705882, g: 0.24705882, b: 0.24705882, a: 0}

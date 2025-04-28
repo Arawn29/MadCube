@@ -1,36 +1,54 @@
-using System.Collections;
+using System;
+using DG.Tweening;
 using UnityEngine;
 
-public class ObjectTransporter : MonoBehaviour, IInteractablePoints
+public class ObjectTransporter : MonoBehaviour, IPlayerInteractablePoints, IButtonListener
 {
-    [SerializeField] private GameObject targetObj;
+    [SerializeField] private GameObject transportTarget;
     [SerializeField] private int requiredActivitonSensors;
-    [SerializeField] private float tranportTime;
+    [SerializeField] private float transportTime;
+    [SerializeField] private int requiredActivateButton;
+    int currentButton = 0;   // Burada property olmasýna gerek yok interfaceden gelen deðeri sadece bu script içerisinde okuyacaðýmýz için nemaproblema
     public int RequiredSensorDetection { get => requiredActivitonSensors; set => requiredActivitonSensors = value; }
-
+    bool isTransported;
     public void Interact(GameObject obj)
     {
-        StartCoroutine(Transport(obj));
-    }
-
-    IEnumerator Transport(GameObject obj)
-    {
-        Debug.Log("Starting Transport Procces");
-        float elapsedTime = 0f;
-        Vector3 startPosition = obj.transform.position;
-        Vector3 finalPosition = CalculateFinalPosition(obj);
-        while (elapsedTime <= tranportTime)
+        if (currentButton >= requiredActivateButton)
         {
-            obj.transform.position = Vector3.Lerp(startPosition, finalPosition, elapsedTime / tranportTime);
-            elapsedTime += Time.deltaTime;
-            yield return null;
+            Transport(obj);
         }
-        obj.transform.position = finalPosition;
     }
-    Vector3 CalculateFinalPosition(GameObject @object)
-    {float offsetMultiplierY = (targetObj.GetComponent<BoxCollider>().size.y / 2) + (@object.GetComponent<BoxCollider>().size.y / 2);
 
-        return targetObj.transform.position + Vector3.up * offsetMultiplierY;
+    public void ButtonPressed()
+    {
+        currentButton++;
+    }
+
+    public void Transport(GameObject obj)
+    {
+        if(isTransported) return;
+        GameManager.Instance.ChangeGameState(GameState.Transporting);
+        Debug.Log("Starting Transport Procces");
+        obj.transform.parent = transform;
+        float ySize = transform.GetComponent<BoxCollider>().size.y /2;
+        float yObjSize = obj.transform.GetComponent<BoxCollider>().size.y / 2;
+        obj.transform.localPosition = Vector3.up* (ySize + yObjSize);
+        Vector3 targetPos = transportTarget.transform.position;
+        transform.DOMove(targetPos, transportTime).OnComplete(() =>
+            {
+                isTransported = true;
+                GameManager.Instance.DetermineXRayFeasibility();
+                GameManager.Instance.ChangeGameState(GameState.Playable);
+                MainEvents.Instance.OnPlayerTeleported?.Invoke(obj.transform.position);
+                obj.transform.parent = null;
+                
+            });
+    }
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transportTarget.transform.position, 0.5f);
+        Gizmos.DrawLine(transform.position, transportTarget.transform.position);
 
     }
 }

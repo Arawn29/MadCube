@@ -8,15 +8,14 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: GM-Grid-11-URP
-  m_Shader: {fileID: -6465566751694194690, guid: 44f8dfd6d74d14469bb0ef07b544f59e,
-    type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 44f8dfd6d74d14469bb0ef07b544f59e, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
   m_InvalidKeywords:
   - _BLEND_MODE_ADD
   m_LightmapFlags: 2
-  m_EnableInstancingVariants: 0
+  m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
   stringTagMap: {}
@@ -52,15 +51,20 @@ Material:
     m_Ints: []
     m_Floats:
     - _BLEND_MODE: 0
+    - _DitherXray: 0
     - _Emission: 0
     - _Metallic: 0.3
+    - _OpacityXray: 1
     - _QueueControl: 0
     - _QueueOffset: 0
+    - _SizeXray: 0
     - _Smoothness: 0
+    - _SmoothnessXray: 0.25
     - _Tiling: 2
     m_Colors:
     - _Base_Color: {r: 0.12967247, g: 0.4986872, b: 0.5849056, a: 1}
     - _Emission_Color: {r: 0, g: 0, b: 0, a: 0}
+    - _PlayerPositionXray: {r: 0.61996055, g: 0.5491936, b: 13.058731, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &3729133454598192734
 MonoBehaviour:
