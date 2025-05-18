@@ -2,8 +2,14 @@ using UnityEngine;
 
 public class SpawnPointController : MonoBehaviour
 {
+    public static SpawnPointController Instance;
     SpawnPoint spawnPoint;
     [SerializeField] private GameObject TargetObject;
+    private void Awake()
+    {
+        if (Instance == null) Instance = this;
+        else Destroy(this);
+    }
     private void Start()
     {
         spawnPoint = new SpawnPoint(TargetObject.transform.position);

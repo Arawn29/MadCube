@@ -51,13 +51,13 @@ Material:
     m_Ints: []
     m_Floats:
     - _BLEND_MODE: 0
-    - _DitherXray: 0
+    - _DitherXray: 2.9
     - _Emission: 0
     - _Metallic: 0.3
     - _OpacityXray: 1
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _SizeXray: 0
+    - _SizeXray: 3.41
     - _Smoothness: 0.5
     - _SmoothnessXray: 0.25
     - _Tiling: 1

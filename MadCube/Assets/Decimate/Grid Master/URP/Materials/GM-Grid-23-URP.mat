@@ -145,7 +145,7 @@ Material:
     - _Base_Color_Top: {r: 0.24528301, g: 0.24528301, b: 0.24528301, a: 1}
     - _Dirt_Color: {r: 0.18592346, g: 0.07008722, b: 0.33018863, a: 0}
     - _Emission_Color: {r: 7.3772106, g: 2.60392, b: 0, a: 0}
-    - _PlayerPositionXray: {r: 0.64642996, g: 0.4928454, b: 13.195669, a: 0}
+    - _PlayerPositionXray: {r: 0.6307159, g: 0.45766762, b: 12.6424465, a: 0}
     - _Side_Color: {r: 0.24528301, g: 0.244126, b: 0.244126, a: 0}
     - _Side_Offset: {r: 0, g: 0, b: 0, a: 0}
     - _Sides_Color: {r: 0.24705882, g: 0.24705882, b: 0.24705882, a: 0}

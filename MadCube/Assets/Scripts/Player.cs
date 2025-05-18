@@ -3,10 +3,6 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-
-
-
-
 enum Direction
 {
     Left,
@@ -18,14 +14,13 @@ enum Direction
 public class Player : MonoBehaviour
 {
     Direction Direction;
-    [Tooltip("Ne kadar süre içerisinde Dönüþünü tamamlasýn.")]
     public float RollingSpeed;
     public Transform PivotTransform;
     [SerializeField] private List<EdgeSensor> EdgeSensors = new();
     public bool IsRolling = false;
     MainEvents myEvents;
     GameManager gameManager;
-    Coroutine rollCoroutine;
+    public Coroutine RollCoroutine;
     private void Awake()
     {
         myEvents = MainEvents.Instance;
@@ -34,37 +29,25 @@ public class Player : MonoBehaviour
     }
     private void Start()
     {
-        myEvents.OnPlayerFall += PlayerFalling;
+        myEvents.OnPlayerFalled += PlayerFalling;
         myEvents.OnPlayerRolled += CheckFloor;
-        myEvents.OnPlayerRolled += RoundTransformValues;
     }
     private void OnDisable()
     {
-        myEvents.OnPlayerFall -= PlayerFalling;
+        myEvents.OnPlayerFalled -= PlayerFalling;
         myEvents.OnPlayerRolled -= CheckFloor;
-        myEvents.OnPlayerRolled -= RoundTransformValues;
     }
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.green;
-        foreach (var sensor in EdgeSensors)
-        {
-
-            Gizmos.DrawSphere(sensor.obj.transform.position, 0.2f);
-        }
-    }
 
     private void Update()
     {
-        if (gameManager.GameState != GameState.Playable) return;
+        if (gameManager.CurrentState != GameState.Playable) return;
         if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
         {
             Direction = GetInput();
-
             if (!IsRolling)
             {
-                rollCoroutine = StartCoroutine(Roll(Direction));
+                RollCoroutine = StartCoroutine(Roll(Direction));
             }
 
         }
@@ -87,8 +70,6 @@ public class Player : MonoBehaviour
             return Direction.None;
         }
 
-
-
     }
     IEnumerator Roll(Direction direction)
     {
@@ -109,17 +90,68 @@ public class Player : MonoBehaviour
         // Dönme iþlemi tamamlandýktan sonra
         myEvents.OnPlayerRolled?.Invoke();
         yield return null;
+        transform.position = RoundPosition(transform.position);
+        transform.rotation = Quaternion.Euler(RoundRotation(transform.eulerAngles));
         IsRolling = false;
 
 
 
     }
-    void StopRoll()
+    public void StopRoll()
     {
         IsRolling = false;
-        if (rollCoroutine != null)
+        if (RollCoroutine != null)
         {
-            StopCoroutine(rollCoroutine);
+            StopCoroutine(RollCoroutine);
+        }
+    }
+    void CheckFloor()
+    {
+        RaycastHit hit;
+        int nonGroundDetected = 0;
+
+        // Check Ground
+        for (int i = 0; i < EdgeSensors.Count; i++)
+        {
+            if (Physics.Raycast(EdgeSensors[i].obj.transform.position, Vector3.down, 10f, gameManager.GroundLayerMask))
+            {
+                EdgeSensors[i].SetSensor();
+            }
+
+            else
+            {
+                nonGroundDetected++;
+                EdgeSensors[i].ResetSensor();
+                Debug.Log(EdgeSensors[i].obj.name);
+            }
+        }
+        // Accept and Run Event
+        if (nonGroundDetected > 0)
+        {
+            foreach (var sensor in EdgeSensors)
+            {
+                if (!sensor.GetSensor())
+                {
+                    if (Physics.Raycast(sensor.obj.transform.position, Vector3.down, out hit, 10f))
+                    {
+                        // Etkileþime geçebileceði bir þeyin üstünde 
+                        if (hit.collider.TryGetComponent<IPlayerInteractablePoints>(out var interact))
+                        {
+                            if (interact.RequiredSensorDetection <= nonGroundDetected)
+                            {
+                                interact.Interact(gameObject);
+                            }
+                        }
+                        // Boslukta
+                        else if (hit.collider.GetComponent<IPlayerInteractablePoints>() == null)
+                        {
+                            Debug.Log($"{sensor.obj.name} göremedi ve düþüyor");
+                            myEvents.OnPlayerFalled?.Invoke();
+                            break;
+                        }
+                    }
+                }
+            }
         }
     }
     private void PlayerFalling()
@@ -215,71 +247,6 @@ public class Player : MonoBehaviour
                 return Vector3.zero;
         }
     }
-
-    // TODO:  !!!!!Interpolasyon dan sonra oluþan küsüratý yuvarlama iþlemi !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  
-    void RoundTransformValues()
-    {
-
-        // Rotasyonu 90 derece katlarýna yuvarla    
-        Vector3 roundedEulerAngles = new Vector3(
-            Mathf.Round(transform.eulerAngles.x / 90f) * 90f,
-            Mathf.Round(transform.eulerAngles.y / 90f) * 90f,
-            Mathf.Round(transform.eulerAngles.z / 90f) * 90f
-        );
-
-        transform.rotation = Quaternion.Euler(roundedEulerAngles);
-    }
-    // Eger ki objenin bir parçasý boþluktaysa düþme iþlemi gerçekleþecek
-    void CheckFloor()
-    {
-        RaycastHit hit;
-        int nonGroundDetected = 0;
-
-        // Check Ground
-        for (int i = 0; i < EdgeSensors.Count; i++)
-        {
-            if (!Physics.Raycast(EdgeSensors[i].obj.transform.position, Vector3.down, 20f, gameManager.GroundLayerMask))
-            {
-                nonGroundDetected++;
-                EdgeSensors[i].ResetSensor();
-                Debug.Log(EdgeSensors[i].obj.name);
-            }
-
-            else
-            {
-                EdgeSensors[i].SetSensor();
-            }
-        }
-        // Accept and Run Event
-        if (nonGroundDetected > 0)
-        {
-            foreach (var sensor in EdgeSensors)
-            {
-                if (!sensor.GetSensor())
-                {
-                    if (Physics.Raycast(sensor.obj.transform.position, Vector3.down, out hit,20f))
-                    {
-                        // Etkileþime geçebileceði bir þeyin üstünde 
-                        if (hit.collider.TryGetComponent<IPlayerInteractablePoints>(out var interact))
-                        {
-                            if (interact.RequiredSensorDetection <= nonGroundDetected)
-                            {
-                                interact.Interact(gameObject);
-                            }
-                        }
-                        // Boslukta
-                        else if (hit.collider.GetComponent<IPlayerInteractablePoints>() == null)
-                        {
-                            Debug.Log($"{sensor.obj.name} göremedi ve düþüyor");
-                            myEvents.OnPlayerFall?.Invoke();
-                        }
-                    }
-                }
-            }
-        }
-
-
-    }
     public string GetPlayerOrientation()
     {
         RaycastHit hit;
@@ -289,7 +256,34 @@ public class Player : MonoBehaviour
         }
         return null;
     }
+    private Vector3 RoundPosition(Vector3 v)
+    {
+        return new Vector3(Mathf.Round(v.x * 10f) / 10f,
+                           Mathf.Round(v.y * 10f) / 10f,
+                           Mathf.Round(v.z * 10f) / 10f);
+    }
+    private Vector3 RoundRotation(Vector3 v)
+    {
+
+        // Rotasyonu 90 derece katlarýna yuvarla    
+        Vector3 roundedEulerAngles = new Vector3(
+            Mathf.Round(v.x / 90f) * 90f,
+            Mathf.Round(v.y / 90f) * 90f,
+            Mathf.Round(v.z / 90f) * 90f
+        );
+        return roundedEulerAngles;
+    }
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green;
+        foreach (var sensor in EdgeSensors)
+        {
+
+            Gizmos.DrawSphere(sensor.obj.transform.position, 0.2f);
+        }
+    }
 }
+
 [System.Serializable]
 public class EdgeSensor
 {

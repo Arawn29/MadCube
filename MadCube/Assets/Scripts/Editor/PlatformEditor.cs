@@ -36,7 +36,9 @@ public class PlatformEditor : Editor
 {
     public override void OnInspectorGUI()
     {
-        
+        EditorGUI.BeginDisabledGroup(true);
+        EditorGUILayout.ObjectField("Script", MonoScript.FromMonoBehaviour((Platform)target), typeof(MonoScript), false);
+        EditorGUI.EndDisabledGroup();
         Platform platform = (Platform)target;
         platform.PlatformIndex = EditorGUILayout.IntField("Platform Index", platform.PlatformIndex);
         platform.material = (Material)EditorGUILayout.ObjectField("Material", platform.material, typeof(Material), true);

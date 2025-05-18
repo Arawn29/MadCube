@@ -64,7 +64,7 @@ Material:
     m_Colors:
     - _Base_Color: {r: 0, g: 0, b: 0, a: 0}
     - _Emission_Color: {r: 1, g: 0, b: 0, a: 0}
-    - _PlayerPositionXray: {r: 0.59832585, g: 0.4585118, b: 12.827555, a: 0}
+    - _PlayerPositionXray: {r: 0.6217209, g: 0.48408225, b: 12.747767, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &3729133454598192734
 MonoBehaviour:
